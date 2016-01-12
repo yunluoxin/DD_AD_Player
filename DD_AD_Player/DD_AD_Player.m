@@ -22,7 +22,7 @@
  */
 @property (nonatomic,strong) NSTimer *timer ;
 /**
- *  一共有多少张图片，用于从第一张跳到第一张使用的
+ *  一共有多少张图片，用于从最后一张跳到第一张使用的
  */
 @property (nonatomic,assign) NSUInteger imageCount ;
 @end
@@ -57,6 +57,9 @@
         [imageView sd_setImageWithURL:[NSURL URLWithString:obj] placeholderImage:nil];
         CGFloat x = idx * width;
         imageView.frame = CGRectMake(x, 0, width, height);
+        UIGestureRecognizer *recognizer = [[UIGestureRecognizer alloc]initWithTarget:self action:@selector(tapImageView:)];
+        [imageView addGestureRecognizer:recognizer];
+        imageView.tag = 1024 + idx ;
         [self.player addSubview:imageView];
     }];
     
@@ -71,6 +74,15 @@
     self.pageControll.currentPage = 0 ;
     self.pageControll.currentPageIndicatorTintColor = [UIColor orangeColor];//设置当前页的小圆点颜色
 //    self.pageControll.pageIndicatorTintColor = [UIColor orangeColor];//会出现当前点和下一个运动的点两点
+}
+
+- (void)tapImageView:(UIGestureRecognizer *)recognizer
+{
+    if (_delegate &&[_delegate respondsToSelector:@selector(AD_Player:tapImageViewWithIndex:)]) {
+        UIView *view = recognizer.view ;
+        NSInteger index = view.tag - 1024 ;
+        [_delegate AD_Player:self tapImageViewWithIndex:index];
+    }
 }
 - (void)nextPage
 {

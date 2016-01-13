@@ -59,6 +59,7 @@
         imageView.frame = CGRectMake(x, 0, width, height);
         UIGestureRecognizer *recognizer = [[UIGestureRecognizer alloc]initWithTarget:self action:@selector(tapImageView:)];
         [imageView addGestureRecognizer:recognizer];
+        imageView.userInteractionEnabled = YES ;
         imageView.tag = 1024 + idx ;
         [self.player addSubview:imageView];
     }];

@@ -127,11 +127,21 @@
     [self.timer invalidate];
     self.timer = nil ;
 }
-
+- (void)removeFromSuperview
+{
+    [self removeTimer];
+    [super removeFromSuperview];
+}
 - (void)setTimerInterval:(NSTimeInterval)timerInterval
 {
     _timerInterval = timerInterval ;
     [self removeTimer];
     [self startTimer];
+}
+
+- (void)dealloc
+{
+    [self removeTimer];
+    [_player removeFromSuperview];
 }
 @end
